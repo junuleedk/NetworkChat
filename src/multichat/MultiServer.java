@@ -22,18 +22,18 @@ public class MultiServer {
 	//멤버변수
 	static ServerSocket serverSocket = null;
 	static Socket socket = null;
-//	//DB인스턴스 생성
-//	SQLinsert SQLinsertDB = new SQLinsert();
-//	//최대정원제한
-//	static final int MAX_USERS = 5; 
-	//클라이언트 정보를 저장하기 위한 Map 컬렉션 생성 
+	//DB인스턴스 생성
+	SQLinsert SQLinsertDB = new SQLinsert();
+	//최대정원제한
+	static final int MAX_USERS = 5; 
+//	클라이언트 정보를 저장하기 위한 Map 컬렉션 생성 
 	Map<String, PrintWriter> clientMap;
-//	//블랙리스트
-//	Set<String> blackList;
-//	//금칙어
-//	Set<String> pWords;
-//	//귓말고정
-//	Map<String, String> tofix;
+	//블랙리스트
+	Set<String> blackList;
+	//금칙어
+	Set<String> pWords;
+	//귓말고정
+	Map<String, String> tofix;
 	
 	
 	//생성자 
@@ -43,15 +43,15 @@ public class MultiServer {
 		/* HashMap 동기화 설정. 쓰레드가 사용자 정보에 동시접근하는 것을 차단한다. */
 		Collections.synchronizedMap(clientMap);
 		
-//		blackList = new HashSet<String>();
-//		blackList.add("바보");
-//		blackList.add("멍청이");
-//		
-//		pWords = new HashSet<String>();
-//		pWords.add("똥개");
-//		pWords.add("개똥");
-//		
-//		tofix = new HashMap<String, String>();
+		blackList = new HashSet<String>();
+		blackList.add("바보");
+		blackList.add("멍청이");
+		
+		pWords = new HashSet<String>();
+		pWords.add("똥개");
+		pWords.add("개똥");
+		
+		tofix = new HashMap<String, String>();
 	}
 	//채팅 서버 초기화 
 	public void init() {
@@ -70,14 +70,14 @@ public class MultiServer {
 					+socket.getLocalAddress()+"(서버)의"
 					+socket.getLocalPort()+" 포트로 연결됨");
 				
-//				//접속인원제한
-//				if (clientMap.size() >= MAX_USERS) {
-//	                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-//	                System.out.println("서버 접속인원 초과하였습니다.");
-//	                out.println("서버 접속인원 초과하였습니다.");
-//	                socket.close();
-//	                continue;
-//                }
+				//접속인원제한
+				if (clientMap.size() >= MAX_USERS) {
+	                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+	                System.out.println("서버 접속인원 초과하였습니다.");
+	                out.println("서버 접속인원 초과하였습니다.");
+	                socket.close();
+	                continue;
+                }
 				
 				/* 클라이언트 1명당 하나의 쓰레드가 생성되어 메세지
 				전송 및 수신을 담당한다. */
@@ -125,13 +125,11 @@ public class MultiServer {
 				 */
 				if(name.equals("")) {
 					/* 입장 혹은 퇴장에서 사용되는 부분 */
-//					it_out.println(URLEncoder.encode(msg, "UTF-8"));
-					it_out.println(msg);
+					it_out.println(URLEncoder.encode(msg, "UTF-8"));
 				}
 				else {
 					/* 메세지를 보낼때 사용되는 부분 */
-//					it_out.println(URLEncoder.encode("["+ name +"] "+ msg, "UTF-8"));
-					it_out.println("["+ name +"] "+ msg);
+					it_out.println("[" + name + "]" + msg);
 				}
 			}
 			catch(Exception e) {
@@ -210,19 +208,19 @@ public class MultiServer {
 				
 				//첫번째 메세지는 대화명이므로 접속을 알린다. 
 				name = in.readLine();
-//				name = URLDecoder.decode(name, "UTF-8");
+				name = URLDecoder.decode(name, "UTF-8");
 				
 				
-//				if(clientMap.containsKey(name)) {
-//					System.out.println( name + "해당 닉네임은 이미 사용중입니다.");
-//					out.println("해당 닉네임은 이미 사용중입니다.");
-//					return;
-//				}
-//				else if(blackList.contains(name)) {
-//					System.out.println( name + "해당 닉네임은 블랙리스트입니다.");
-//					out.println("해당 닉네임은 블랙리스트입니다.");
-//					return;
-//				}
+				if(clientMap.containsKey(name)) {
+					System.out.println( name + "해당 닉네임은 이미 사용중입니다.");
+					out.println("해당 닉네임은 이미 사용중입니다.");
+					return;
+				}
+				else if(blackList.contains(name)) {
+					System.out.println( name + "해당 닉네임은 블랙리스트입니다.");
+					out.println("해당 닉네임은 블랙리스트입니다.");
+					return;
+				}
 					
 				sendAllMsg("", name + "님이 입장하셨습니다.");
 				clientMap.put(name, out);
@@ -233,17 +231,17 @@ public class MultiServer {
 				//두번째 메세지부터는 "대화내용"
 				while (in!=null) {
 					s = in.readLine();
-//					s = URLDecoder.decode(s, "UTF-8");
+					s = URLDecoder.decode(s, "UTF-8");
 					
-//					//금칙어처리
-//					if(pWords.contains(s)) {
-//						System.out.println("해당 단어는 금칙어입니다.");
-//						out.println("해당 단어는 금칙어입니다.");
-//						continue;
-//					}
-//					else {
-//						System.out.println(s);
-//					}
+					//금칙어처리
+					if(pWords.contains(s)) {
+						System.out.println("해당 단어는 금칙어입니다.");
+						out.println("해당 단어는 금칙어입니다.");
+						continue;
+					}
+					else {
+						System.out.println(s);
+					}
 					
 					if ( s == null )
 						break;
@@ -293,7 +291,7 @@ public class MultiServer {
 							매개변수는 발신대화명, 메세지, 수신대화명 형태로 
 							작성한다. */
 							sendAllMsg(name, msgContent, strArr[1]);
-//							SQLinsertDB.dbExecute(name, msgContent);
+							SQLinsertDB.dbExecute(name, msgContent);
 						}
 //						else if (strArr[0].equals("/tofix")) {
 //							System.out.println("귓속말 고정중" + name + ">>");
@@ -304,7 +302,7 @@ public class MultiServer {
 					else {
 						//슬러쉬가 없다면 일반 대화내용
 						sendAllMsg(name, s);
-//						SQLinsertDB.dbExecute(name, s);
+						SQLinsertDB.dbExecute(name, s);
 					}
 				}
 			}
@@ -313,16 +311,16 @@ public class MultiServer {
 			}
 			finally {
 				
-//				if (clientMap.containsKey(name) || blackList.contains(name)) {
-//					return;
-//				}
-//				else {
-//					
-//					clientMap.remove(name);
-//					sendAllMsg("", name + "님이 퇴장하셨습니다.");
-//					System.out.println(name + " [" + Thread.currentThread().getName() +  "] 퇴장");
-//					System.out.println("현재 접속자 수는 "+clientMap.size()+"명 입니다.");
-//				}
+				if (clientMap.containsKey(name) || blackList.contains(name)) {
+					return;
+				}
+				else {
+					
+					clientMap.remove(name);
+					sendAllMsg("", name + "님이 퇴장하셨습니다.");
+					System.out.println(name + " [" + Thread.currentThread().getName() +  "] 퇴장");
+					System.out.println("현재 접속자 수는 "+clientMap.size()+"명 입니다.");
+				}
 				
 				clientMap.remove(name);
 				sendAllMsg("", name + "님이 퇴장하셨습니다.");

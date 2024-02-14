@@ -31,8 +31,8 @@ public class Sender extends Thread {
 
 		try {
 			//최초로 보내는 메세지는 대화명
-//			out.println(URLEncoder.encode(name, "UTF-8"));
-			out.println(name);
+			out.println(URLEncoder.encode(name, "UTF-8"));
+//			out.println(name);
 			
 			//두번째 부터는 q를 입력하기전까지는 입력한 메세지를 서버로 전송한다. 
 			while(out != null) {
@@ -53,7 +53,7 @@ public class Sender extends Thread {
 			out.close();
 			socket.close();
 		}
-//		catch (UnsupportedEncodingException e1) {}
+		catch (UnsupportedEncodingException e1) {}
 		catch (Exception e) {
 			System.out.println("예외>Sender>run2:"+ e);
 		}

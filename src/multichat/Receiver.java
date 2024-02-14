@@ -32,9 +32,10 @@ public class Receiver extends Thread {
 	 */
 	@Override
 	public void run() {
+		
 		while(in != null) {
 			try {
-				System.out.println("Thread Receive : "+ in.readLine());
+				System.out.println("Thread Receive : " + URLDecoder.decode(in.readLine(), "UTF-8"));
 			}
 			catch(SocketException ne) {
 				System.out.println("SocketException");
@@ -43,6 +44,13 @@ public class Receiver extends Thread {
 			catch (Exception e) {
 				System.out.println("예외>Receiver>run1:"+ e);
 			}
+		}
+
+		try {
+			in.close();
+		}
+		catch (Exception e) {
+			System.out.println("예외>Receiver>run2:"+ e);
 		}
 		
 //		while(in != null) {
@@ -65,12 +73,12 @@ public class Receiver extends Thread {
 //				System.out.println("예외>Receiver>run1:"+ e);
 //			}
 //		}
-		
-		try {
-			in.close();
-		}
-		catch (Exception e) {
-			System.out.println("예외>Receiver>run2:"+ e);
-		}
+//		
+//		try {
+//			in.close();
+//		}
+//		catch (Exception e) {
+//			System.out.println("예외>Receiver>run2:"+ e);
+//		}
 	}
 }
