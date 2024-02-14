@@ -26,7 +26,6 @@ public class MultiServer {
 	SQLinsert SQLinsertDB = new SQLinsert();
 	//최대정원제한
 	static final int MAX_USERS = 5; 
-	//DB처리
 	//클라이언트 정보를 저장하기 위한 Map 컬렉션 생성 
 	Map<String, PrintWriter> clientMap;
 	//블랙리스트
@@ -207,15 +206,21 @@ public class MultiServer {
 				name = in.readLine();
 				name = URLDecoder.decode(name, "UTF-8");
 				
-				if(clientMap.containsKey(name)) {
-					System.out.println( name + "해당 닉네임은 이미 사용중입니다.");
-					out.println("해당 닉네임은 이미 사용중입니다.");
-					return;
-				}
-				else if(blackList.contains(name)) {
-					System.out.println( name + "해당 닉네임은 블랙리스트입니다.");
-					out.println("해당 닉네임은 블랙리스트입니다.");
-					return;
+				while(true) {
+					
+					if(clientMap.containsKey(name)) {
+						System.out.println( name + "해당 닉네임은 이미 사용중입니다.");
+						out.println("해당 닉네임은 이미 사용중입니다.");
+						return;
+					}
+					else if(blackList.contains(name)) {
+						System.out.println( name + "해당 닉네임은 블랙리스트입니다.");
+						out.println("해당 닉네임은 블랙리스트입니다.");
+						return;
+					}
+					else {
+						break;
+					}
 				}
 					
 				sendAllMsg("", name + "님이 입장하셨습니다.");
