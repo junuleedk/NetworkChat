@@ -1,9 +1,7 @@
-package multichat;
+package chat8;
 
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.Socket;
-import java.net.URLEncoder;
 import java.util.Scanner;
 
 //클라이언트가 입력한 메세지를 서버로 전송해주는 쓰레드 클래스
@@ -31,9 +29,8 @@ public class Sender extends Thread {
 
 		try {
 			//최초로 보내는 메세지는 대화명
-//			out.println(URLEncoder.encode(name, "UTF-8"));
 			out.println(name);
-			
+
 			//두번째 부터는 q를 입력하기전까지는 입력한 메세지를 서버로 전송한다. 
 			while(out != null) {
 				try {
@@ -42,7 +39,7 @@ public class Sender extends Thread {
 						break;
 					}
 					else {
-						out.println(URLEncoder.encode(s2, "UTF-8"));
+						out.println(s2);
 					}
 				}
 				catch (Exception e) {
@@ -53,7 +50,6 @@ public class Sender extends Thread {
 			out.close();
 			socket.close();
 		}
-//		catch (UnsupportedEncodingException e1) {}
 		catch (Exception e) {
 			System.out.println("예외>Sender>run2:"+ e);
 		}
